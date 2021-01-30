@@ -39,6 +39,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Dirt
+    uniqueID: 1898052023
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

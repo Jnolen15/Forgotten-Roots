@@ -8,16 +8,22 @@ public class drillControll : MonoBehaviour
 
     Rigidbody2D rb;
 
+    DrillLineDrawer lineDrawer;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        lineDrawer = GetComponent<DrillLineDrawer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            lineDrawer.StopDrawing();
+        }
     }
 
     void FixedUpdate()

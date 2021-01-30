@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8917257687395305639}
   - component: {fileID: 8917257687395305638}
   - component: {fileID: -4161434420986652835}
+  - component: {fileID: 6296648182941090684}
   m_Layer: 0
   m_Name: DrillHead
   m_TagString: Untagged
@@ -134,3 +135,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+--- !u!114 &6296648182941090684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8917257687395305641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95571dfe3aa27b468a235d41c75236e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  linePrefab: {fileID: 7454850529350730414, guid: 0cee67b56d72a3f40a1eb1107e8a2a24,
+    type: 3}
+  currentLine: {fileID: 0}
+  lineRenderer: {fileID: 0}
+  edgeCollider: {fileID: 0}
+  fingerPositions: []
+  targetToFollow: {fileID: 0}
