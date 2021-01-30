@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - aimArrow
+  - Boulder
+  - Drill
+  - Rock
   layers:
   - Default
   - TransparentFX

@@ -9,6 +9,7 @@ public class Controller : MonoBehaviour
     public float rightBound = 70f;
 
     private bool isDrilling = false;
+    private bool drillOut = false;
     private bool isDone = false;
 
     Rigidbody2D rb;
@@ -25,33 +26,35 @@ public class Controller : MonoBehaviour
     private void Update()
     {
 
-        if (!isDrilling)
+        if (!drillOut)
         {
-            movement.x = Input.GetAxisRaw("Horizontal");
+            if (!isDrilling) // Player movement
+            {
+                movement.x = Input.GetAxisRaw("Horizontal");
+            }
+
+            if (isDrilling) // Drill Aim
+            {
+                if (Input.GetButtonDown("Activate"))
+                {
+                    drillMode();
+                }
+                else
+                {
+                    clawAim.transform.rotation = Quaternion.Euler(Vector3.forward * (Mathf.PingPong(Time.time * aimSpeed, rightBound) - 35));
+                }
+            }
         }
 
-        if (isDrilling)
-        {
-            if(Input.GetButtonDown("Activate"))
-            {
-                drillMode();
-                Debug.Log("Fire!");
-                isDone = true;
-            }
-            else
-            {
-                clawAim.transform.rotation = Quaternion.Euler(Vector3.forward * (Mathf.PingPong(Time.time * aimSpeed, rightBound) - 35));
-            }
-        }
-
-        if (Input.GetButtonDown("Activate") && !isDrilling && !isDone)
+        if (Input.GetButtonDown("Activate") && !isDrilling && !isDone) // Enter drill aim mode
         {
             isDrilling = true;
         }
-        else if (isDone)
+        else if (isDone) // Go back to movement when done
         {
             isDrilling = false;
             isDone = false;
+            drillOut = false;
         }
     }
 
@@ -65,6 +68,20 @@ public class Controller : MonoBehaviour
 
     void drillMode()
     {
-        Instantiate(drillHead, aimArrow.transform.position, aimArrow.transform.rotation, transform);
+        Instantiate(drillHead, aimArrow.transform.position, aimArrow.transform.rotation);
+        drillOut = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Drill")
+        {
+            isDone = true;
+        }
+
+        if (col.gameObject.tag == "Rock")
+        {
+            isDone = true;
+        }
     }
 }
