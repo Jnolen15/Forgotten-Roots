@@ -24,12 +24,10 @@ public class drillControll : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-<<<<<<< Updated upstream
         if (Input.GetKeyDown(KeyCode.X))
         {
             lineDrawer.StopDrawing();
         }
-=======
         if (Input.GetButtonDown("Activate") && drillHit && !drillReturn)
         {
             StartCoroutine(DrillMove());
@@ -43,7 +41,6 @@ public class drillControll : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         rb.velocity = new Vector2(0, 0);
         drillReturn = false;
->>>>>>> Stashed changes
     }
 
     void FixedUpdate()
