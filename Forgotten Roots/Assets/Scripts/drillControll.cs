@@ -5,6 +5,7 @@ using UnityEngine;
 public class drillControll : MonoBehaviour
 {
     public float speed = 1f;
+    public GameObject PingZonePrefab;
 
     private bool moving = true;
     private bool drillHit = false;
@@ -24,10 +25,6 @@ public class drillControll : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            lineDrawer.StopDrawing();
-        }
         if (Input.GetButtonDown("Activate") && drillHit && !drillReturn)
         {
             StartCoroutine(DrillMove());
@@ -54,16 +51,20 @@ public class drillControll : MonoBehaviour
     {
         if (col.gameObject.tag == "Rock")
         {
+            lineDrawer.StopDrawing();
             rb.velocity = new Vector2(0, 0);
             moving = false;
             drillHit = true;
+            Instantiate(PingZonePrefab, transform.position, Quaternion.identity);
         }
 
         if (col.gameObject.tag == "Boulder")
         {
+            lineDrawer.StopDrawing();
             rb.velocity = new Vector2(0, 0);
             moving = false;
             rb.velocity = transform.up * speed;
+            Instantiate(PingZonePrefab, transform.position, Quaternion.identity);
         }
 
         if (col.gameObject.tag == "Player")

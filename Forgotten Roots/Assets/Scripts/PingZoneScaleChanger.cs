@@ -20,6 +20,7 @@ public class PingZoneScaleChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (currentScale == finalScale)
         {
             print("Done scaling");
@@ -30,7 +31,7 @@ public class PingZoneScaleChanger : MonoBehaviour
         {
             print("scaling");
             currentScale = Mathf.Lerp(currentScale, finalScale, lerpVal);
-            transform.localScale.Set(currentScale, currentScale, currentScale);
+            transform.localScale = new Vector3(currentScale, currentScale, currentScale);
         }
     }
 }

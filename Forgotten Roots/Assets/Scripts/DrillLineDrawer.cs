@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class DrillLineDrawer : MonoBehaviour
 {
+    [SerializeField] float lineWidth = .5f;
+
     public GameObject linePrefab;
     public GameObject currentLine;
 
     public LineRenderer lineRenderer;
-    public EdgeCollider2D edgeCollider;
     public List<Vector2> fingerPositions;
 
     public Transform targetToFollow;
@@ -19,8 +20,7 @@ public class DrillLineDrawer : MonoBehaviour
     void Start()
     {
         targetToFollow = GetComponentInParent<Transform>();
-        CreateLine();
-        drawing = true;
+        StartDrawing();
     }
 
     // Update is called once per frame
@@ -42,13 +42,12 @@ public class DrillLineDrawer : MonoBehaviour
     {
         currentLine = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
         lineRenderer = currentLine.GetComponent<LineRenderer>();
-        edgeCollider = currentLine.GetComponent<EdgeCollider2D>();
+        lineRenderer.widthMultiplier = lineWidth;
         fingerPositions.Clear();
         fingerPositions.Add(targetToFollow.position);
         fingerPositions.Add(targetToFollow.position);
         lineRenderer.SetPosition(0, fingerPositions[0]);
         lineRenderer.SetPosition(1, fingerPositions[1]);
-        edgeCollider.points = fingerPositions.ToArray();
     }
 
     void UpdateLine(Vector2 newFingerPos)
@@ -56,13 +55,17 @@ public class DrillLineDrawer : MonoBehaviour
         fingerPositions.Add(newFingerPos);
         lineRenderer.positionCount++;
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, newFingerPos);
-        edgeCollider.points = fingerPositions.ToArray();
+    }
+
+    public void StartDrawing()
+    {
+        CreateLine();
+        drawing = true;
     }
 
     public void StopDrawing()
     {
         drawing = false;
-        // should also create ping circle
     }
 }
 
