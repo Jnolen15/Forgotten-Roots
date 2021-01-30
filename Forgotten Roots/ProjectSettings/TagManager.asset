@@ -8,6 +8,7 @@ TagManager:
   - Boulder
   - Drill
   - Rock
+  - ThrowableRock
   layers:
   - Default
   - TransparentFX

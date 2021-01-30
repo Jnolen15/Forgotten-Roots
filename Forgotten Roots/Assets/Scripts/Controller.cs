@@ -81,7 +81,16 @@ public class Controller : MonoBehaviour
 
         if (col.gameObject.tag == "Rock")
         {
-            isDone = true;
+            Instantiate(col.gameObject.GetComponent<Rock>().throwable, transform.position, transform.rotation);
+            Destroy(col.gameObject);
+        }
+
+        if (col.gameObject.tag == "ThrowableRock")
+        {
+            if (col.gameObject.GetComponent<Launch>().catchable)
+            {
+                Destroy(col.gameObject);
+            }
         }
     }
 }

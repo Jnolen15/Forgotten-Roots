@@ -8,6 +8,8 @@ public class Rock : MonoBehaviour
 
     private GameObject drill;
 
+    public GameObject throwable;
+
     // Update is called once per frame
     void Update()
     {
@@ -24,11 +26,6 @@ public class Rock : MonoBehaviour
             isGrabbed = true;
 
             drill = col.gameObject;
-        }
-
-        if (col.gameObject.tag == "Player")
-        {
-            Destroy(gameObject);
         }
     }
 }
