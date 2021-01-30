@@ -23,13 +23,11 @@ public class PingZoneScaleChanger : MonoBehaviour
 
         if (currentScale == finalScale)
         {
-            print("Done scaling");
             finishedScaling = true;
         }
 
         if (!finishedScaling)
         {
-            print("scaling");
             currentScale = Mathf.Lerp(currentScale, finalScale, lerpVal);
             transform.localScale = new Vector3(currentScale, currentScale, currentScale);
         }

@@ -30,7 +30,7 @@ public class DrillLineDrawer : MonoBehaviour
         {
             Vector2 tempFingerPos = targetToFollow.position;
             {
-                if (Vector2.Distance(tempFingerPos, fingerPositions[fingerPositions.Count - 1]) > .1f) // line distance variable should be adjustable
+                if (Vector2.Distance(tempFingerPos, fingerPositions[fingerPositions.Count - 1]) > .1f)
                 {
                     UpdateLine(tempFingerPos);
                 }

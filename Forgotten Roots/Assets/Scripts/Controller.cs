@@ -68,7 +68,7 @@ public class Controller : MonoBehaviour
 
     void drillMode()
     {
-        Instantiate(drillHead, aimArrow.transform.position, aimArrow.transform.rotation);
+        GameObject drill = Instantiate(drillHead, aimArrow.transform.position, aimArrow.transform.rotation);
         drillOut = true;
     }
 

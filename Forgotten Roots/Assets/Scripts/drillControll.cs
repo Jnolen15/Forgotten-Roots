@@ -12,14 +12,16 @@ public class drillControll : MonoBehaviour
     private bool drillReturn = false;
 
     Rigidbody2D rb;
-
     DrillLineDrawer lineDrawer;
+    CameraFollower cameraFollower;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         lineDrawer = GetComponent<DrillLineDrawer>();
+        cameraFollower = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollower>();
+        cameraFollower.SetCameraTarget(this.transform);
     }
 
     // Update is called once per frame
@@ -71,5 +73,9 @@ public class drillControll : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    void OnDestroy()
+    {
+        cameraFollower.ResetCameraTarget();
     }
 }
