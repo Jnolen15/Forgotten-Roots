@@ -12,6 +12,8 @@ public class Controller : MonoBehaviour
     private bool drillOut = false;
     private bool isDone = false;
     private bool reading = false;
+    private bool readingTitle = true;
+    private bool readingTutorial = false;
 
     Rigidbody2D rb;
     Vector2 movement;
@@ -30,52 +32,60 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
-
-        if (!reading)
+        if (readingTitle)
         {
-            if (!drillOut)
-            {
-                if (!isDrilling) // Player movement
-                {
-                    movement.x = Input.GetAxisRaw("Horizontal");
-                    animator.SetFloat("Speed", Mathf.Abs(movement.x));
-                }
-
-                if (isDrilling) // Drill Aim
-                {
-                    if (Input.GetButtonDown("Activate"))
-                    {
-                        drillMode();
-                    }
-                    else
-                    {
-                        clawAim.transform.rotation = Quaternion.Euler(Vector3.forward * (Mathf.PingPong(Time.time * aimSpeed, rightBound) - 35));
-                    }
-                }
-            }
-
-            if (Input.GetButtonDown("Activate") && !isDrilling && !isDone) // Enter drill aim mode
-            {
-                isDrilling = true;
-            }
-            else if (isDone) // Go back to movement when done
-            {
-                isDrilling = false;
-                isDone = false;
-                drillOut = false;
-            }
+            readingTitle = false;
         }
-        else
-        {
-            // Open Page
-            currentPage = GameObject.Find(currentNote);
-            currentPage.GetComponent<SpriteRenderer>().enabled = true;
 
-            // Close Page
-            if (Input.GetButtonDown("Activate"))
+        // CORE LOOP
+        if (!readingTitle)
+        {
+            if (!reading)
             {
-                reading = false;
-                currentPage.GetComponent<SpriteRenderer>().enabled = false;
+                if (!drillOut)
+                {
+                    if (!isDrilling) // Player movement
+                    {
+                        movement.x = Input.GetAxisRaw("Horizontal");
+                        animator.SetFloat("Speed", Mathf.Abs(movement.x));
+                    }
+
+                    if (isDrilling) // Drill Aim
+                    {
+                        if (Input.GetButtonDown("Activate"))
+                        {
+                            drillMode();
+                        }
+                        else
+                        {
+                            clawAim.transform.rotation = Quaternion.Euler(Vector3.forward * (Mathf.PingPong(Time.time * aimSpeed, rightBound) - 35));
+                        }
+                    }
+                }
+
+                if (Input.GetButtonDown("Activate") && !isDrilling && !isDone) // Enter drill aim mode
+                {
+                    isDrilling = true;
+                }
+                else if (isDone) // Go back to movement when done
+                {
+                    isDrilling = false;
+                    isDone = false;
+                    drillOut = false;
+                }
+            }
+            else
+            {
+                // Open Page
+                currentPage = GameObject.Find(currentNote);
+                currentPage.GetComponent<SpriteRenderer>().enabled = true;
+
+                // Close Page
+                if (Input.GetButtonDown("Activate"))
+                {
+                    reading = false;
+                    currentPage.GetComponent<SpriteRenderer>().enabled = false;
+                }
             }
         }
         
