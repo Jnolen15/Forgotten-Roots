@@ -17,6 +17,8 @@ public class Controller : MonoBehaviour
     public GameObject clawAim;
     public GameObject aimArrow;
     public GameObject drillHead;
+    public GameObject launchZone;
+    public Animator animator;
 
     void Start()
     {
@@ -31,6 +33,7 @@ public class Controller : MonoBehaviour
             if (!isDrilling) // Player movement
             {
                 movement.x = Input.GetAxisRaw("Horizontal");
+                animator.SetFloat("Speed", Mathf.Abs(movement.x));
             }
 
             if (isDrilling) // Drill Aim
@@ -81,7 +84,7 @@ public class Controller : MonoBehaviour
 
         if (col.gameObject.tag == "Rock")
         {
-            Instantiate(col.gameObject.GetComponent<Rock>().throwable, transform.position, transform.rotation);
+            Instantiate(col.gameObject.GetComponent<Rock>().throwable, launchZone.transform.position, transform.rotation);
             Destroy(col.gameObject);
         }
 

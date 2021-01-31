@@ -13,7 +13,7 @@ public class Launch : MonoBehaviour
 
     void Awake()
     {
-        transform.Rotate(0.0f, 0.0f, Random.Range(-25.0f, 25.0f));
+        transform.Rotate(0.0f, 0.0f, Random.Range(-15.0f, 15.0f));
     }
 
     // Start is called before the first frame update
@@ -37,6 +37,15 @@ public class Launch : MonoBehaviour
     {
         yield return new WaitForSeconds(0.4f);
         catchable = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Surface")
+        {
+            rb.velocity = new Vector2(0, 0);
+            rb.gravityScale = 0;
+        }
     }
 
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class drillControll : MonoBehaviour
 {
-    public float speed = 1f;
+    public float speed = 2f;
     public GameObject PingZonePrefab;
 
     private bool moving = true;
@@ -37,7 +37,7 @@ public class drillControll : MonoBehaviour
     {
         drillReturn = true;
         rb.velocity = transform.up * speed;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
         rb.velocity = new Vector2(0, 0);
         drillReturn = false;
     }

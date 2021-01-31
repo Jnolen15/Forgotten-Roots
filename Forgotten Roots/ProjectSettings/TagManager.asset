@@ -9,6 +9,7 @@ TagManager:
   - Drill
   - Rock
   - ThrowableRock
+  - Surface
   layers:
   - Default
   - TransparentFX
