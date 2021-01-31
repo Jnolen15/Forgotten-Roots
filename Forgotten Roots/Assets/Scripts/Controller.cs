@@ -7,13 +7,13 @@ public class Controller : MonoBehaviour
     public float speed = 0.1f;
     public float aimSpeed = 100f;
     public float rightBound = 70f;
+    public int numItems = 0;
 
     private bool isDrilling = false;
     private bool drillOut = false;
     private bool isDone = false;
-    private bool reading = false;
-    private bool readingTitle = true;
-    private bool readingTutorial = false;
+    public bool justFinished = false;
+    public bool reading = true;
 
     Rigidbody2D rb;
     Vector2 movement;
@@ -22,25 +22,21 @@ public class Controller : MonoBehaviour
     public GameObject drillHead;
     public GameObject launchZone;
     public string currentNote;
-    public GameObject currentPage;
     public Animator animator;
+    public reader read;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentNote = "Title";
     }
 
     private void Update()
     {
-        if (readingTitle)
-        {
-            readingTitle = false;
-        }
 
-        // CORE LOOP
-        if (!readingTitle)
+        if (numItems < 10)
         {
-            if (!reading)
+            if (!reading && !justFinished)
             {
                 if (!drillOut)
                 {
@@ -74,26 +70,23 @@ public class Controller : MonoBehaviour
                     drillOut = false;
                 }
             }
-            else
+            else if (!reading && justFinished)
             {
-                // Open Page
-                currentPage = GameObject.Find(currentNote);
-                currentPage.GetComponent<SpriteRenderer>().enabled = true;
-
-                // Close Page
-                if (Input.GetButtonDown("Activate"))
-                {
-                    reading = false;
-                    currentPage.GetComponent<SpriteRenderer>().enabled = false;
-                }
+                justFinished = false;
             }
+        }
+        else
+        {
+            GameObject treeItems = GameObject.Find("TreeItems");
+            treeItems.GetComponent<SpriteRenderer>().enabled = true;
+            StartCoroutine(Ending());
         }
         
     }
 
     void FixedUpdate()
     {
-        if (!isDrilling && !reading)
+        if (!isDrilling && !reading && numItems < 10)
         {
             rb.MovePosition(rb.position + movement * speed);
         }
@@ -107,6 +100,13 @@ public class Controller : MonoBehaviour
     {
         GameObject drill = Instantiate(drillHead, aimArrow.transform.position, aimArrow.transform.rotation);
         drillOut = true;
+    }
+
+    IEnumerator Ending()
+    {
+        yield return new WaitForSeconds(5f);
+        reading = true;
+        currentNote = "Thanks";
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -144,6 +144,7 @@ public class Controller : MonoBehaviour
         {
             if (col.gameObject.GetComponent<Launch>().catchable)
             {
+                numItems += 1;
                 reading = true;
                 currentNote = col.gameObject.GetComponent<Launch>().notename;
                 Destroy(col.gameObject);

@@ -15,7 +15,14 @@ public class Launch : MonoBehaviour
 
     void Awake()
     {
-        transform.Rotate(0.0f, 0.0f, Random.Range(-15.0f, 15.0f));
+        float angle = 0;
+        int choice = Random.Range(0, 1);
+        if (choice == 0)
+            angle = Random.Range(-5.0f, -10.0f);
+        if (choice == 1)
+            angle = Random.Range(5.0f, 10.0f);
+
+        transform.Rotate(0.0f, 0.0f, angle);
     }
 
     // Start is called before the first frame update

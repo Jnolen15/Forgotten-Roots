@@ -95,5 +95,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingScale: 0.1
-  finalScale: 0.8
+  finalScale: 0.85
   lerpVal: 0.05
