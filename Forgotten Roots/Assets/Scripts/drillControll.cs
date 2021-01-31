@@ -6,6 +6,7 @@ public class drillControll : MonoBehaviour
 {
     public float speed = 2f;
     public GameObject PingZonePrefab;
+    public GameObject heldItem;
 
     private bool moving = true;
     private bool drillHit = false;
@@ -53,6 +54,17 @@ public class drillControll : MonoBehaviour
     {
         if (col.gameObject.tag == "Rock")
         {
+            heldItem = col.gameObject;
+            lineDrawer.StopDrawing();
+            rb.velocity = new Vector2(0, 0);
+            moving = false;
+            drillHit = true;
+            Instantiate(PingZonePrefab, transform.position, Quaternion.identity);
+        }
+
+        if (col.gameObject.tag == "Artifact")
+        {
+            heldItem = col.gameObject;
             lineDrawer.StopDrawing();
             rb.velocity = new Vector2(0, 0);
             moving = false;
@@ -67,11 +79,6 @@ public class drillControll : MonoBehaviour
             moving = false;
             rb.velocity = transform.up * speed;
             Instantiate(PingZonePrefab, transform.position, Quaternion.identity);
-        }
-
-        if (col.gameObject.tag == "Player")
-        {
-            Destroy(gameObject);
         }
     }
     void OnDestroy()

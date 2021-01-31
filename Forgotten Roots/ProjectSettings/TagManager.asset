@@ -10,6 +10,8 @@ TagManager:
   - Rock
   - ThrowableRock
   - Surface
+  - ThrowableArtifact
+  - Artifact
   layers:
   - Default
   - TransparentFX

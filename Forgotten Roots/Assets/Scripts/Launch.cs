@@ -11,6 +11,8 @@ public class Launch : MonoBehaviour
 
     public bool catchable = false;
 
+    public string notename;
+
     void Awake()
     {
         transform.Rotate(0.0f, 0.0f, Random.Range(-15.0f, 15.0f));

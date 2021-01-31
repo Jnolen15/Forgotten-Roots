@@ -11,6 +11,7 @@ public class Controller : MonoBehaviour
     private bool isDrilling = false;
     private bool drillOut = false;
     private bool isDone = false;
+    private bool reading = false;
 
     Rigidbody2D rb;
     Vector2 movement;
@@ -18,6 +19,8 @@ public class Controller : MonoBehaviour
     public GameObject aimArrow;
     public GameObject drillHead;
     public GameObject launchZone;
+    public string currentNote;
+    public GameObject currentPage;
     public Animator animator;
 
     void Start()
@@ -28,44 +31,65 @@ public class Controller : MonoBehaviour
     private void Update()
     {
 
-        if (!drillOut)
+        if (!reading)
         {
-            if (!isDrilling) // Player movement
+            if (!drillOut)
             {
-                movement.x = Input.GetAxisRaw("Horizontal");
-                animator.SetFloat("Speed", Mathf.Abs(movement.x));
+                if (!isDrilling) // Player movement
+                {
+                    movement.x = Input.GetAxisRaw("Horizontal");
+                    animator.SetFloat("Speed", Mathf.Abs(movement.x));
+                }
+
+                if (isDrilling) // Drill Aim
+                {
+                    if (Input.GetButtonDown("Activate"))
+                    {
+                        drillMode();
+                    }
+                    else
+                    {
+                        clawAim.transform.rotation = Quaternion.Euler(Vector3.forward * (Mathf.PingPong(Time.time * aimSpeed, rightBound) - 35));
+                    }
+                }
             }
 
-            if (isDrilling) // Drill Aim
+            if (Input.GetButtonDown("Activate") && !isDrilling && !isDone) // Enter drill aim mode
             {
-                if (Input.GetButtonDown("Activate"))
-                {
-                    drillMode();
-                }
-                else
-                {
-                    clawAim.transform.rotation = Quaternion.Euler(Vector3.forward * (Mathf.PingPong(Time.time * aimSpeed, rightBound) - 35));
-                }
+                isDrilling = true;
+            }
+            else if (isDone) // Go back to movement when done
+            {
+                isDrilling = false;
+                isDone = false;
+                drillOut = false;
             }
         }
+        else
+        {
+            // Open Page
+            currentPage = GameObject.Find(currentNote);
+            currentPage.GetComponent<SpriteRenderer>().enabled = true;
 
-        if (Input.GetButtonDown("Activate") && !isDrilling && !isDone) // Enter drill aim mode
-        {
-            isDrilling = true;
+            // Close Page
+            if (Input.GetButtonDown("Activate"))
+            {
+                reading = false;
+                currentPage.GetComponent<SpriteRenderer>().enabled = false;
+            }
         }
-        else if (isDone) // Go back to movement when done
-        {
-            isDrilling = false;
-            isDone = false;
-            drillOut = false;
-        }
+        
     }
 
     void FixedUpdate()
     {
-        if (!isDrilling)
+        if (!isDrilling && !reading)
         {
             rb.MovePosition(rb.position + movement * speed);
+        }
+        else
+        {
+            animator.SetFloat("Speed", 0);
         }
     }
 
@@ -80,18 +104,38 @@ public class Controller : MonoBehaviour
         if (col.gameObject.tag == "Drill")
         {
             isDone = true;
-        }
-
-        if (col.gameObject.tag == "Rock")
-        {
-            Instantiate(col.gameObject.GetComponent<Rock>().throwable, launchZone.transform.position, transform.rotation);
-            Destroy(col.gameObject);
+            if (col.gameObject.GetComponent<drillControll>().heldItem == null)
+            {
+                Destroy(col.gameObject);
+            }
+            else if (col.gameObject.GetComponent<drillControll>().heldItem.tag == "Rock")
+            {
+                Instantiate(col.gameObject.GetComponent<drillControll>().heldItem.GetComponent<Rock>().throwable, launchZone.transform.position, transform.rotation);
+                Destroy(col.gameObject.GetComponent<drillControll>().heldItem);
+                Destroy(col.gameObject);
+            }
+            else if (col.gameObject.GetComponent<drillControll>().heldItem.tag == "Artifact")
+            {
+                Instantiate(col.gameObject.GetComponent<drillControll>().heldItem.GetComponent<Artifact>().throwable, launchZone.transform.position, transform.rotation);
+                Destroy(col.gameObject.GetComponent<drillControll>().heldItem);
+                Destroy(col.gameObject);
+            }
         }
 
         if (col.gameObject.tag == "ThrowableRock")
         {
             if (col.gameObject.GetComponent<Launch>().catchable)
             {
+                Destroy(col.gameObject);
+            }
+        }
+
+        if (col.gameObject.tag == "ThrowableArtifact")
+        {
+            if (col.gameObject.GetComponent<Launch>().catchable)
+            {
+                reading = true;
+                currentNote = col.gameObject.GetComponent<Launch>().notename;
                 Destroy(col.gameObject);
             }
         }
