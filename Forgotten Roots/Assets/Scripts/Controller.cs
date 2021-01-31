@@ -34,7 +34,7 @@ public class Controller : MonoBehaviour
     private void Update()
     {
 
-        if (numItems < 10)
+        if (numItems < 11)
         {
             if (!reading && !justFinished)
             {
@@ -86,7 +86,7 @@ public class Controller : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isDrilling && !reading && numItems < 10)
+        if (!isDrilling && !reading && numItems < 11)
         {
             rb.MovePosition(rb.position + movement * speed);
         }
@@ -105,8 +105,8 @@ public class Controller : MonoBehaviour
     IEnumerator Ending()
     {
         yield return new WaitForSeconds(5f);
+        currentNote = "Ending";
         reading = true;
-        currentNote = "Thanks";
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -144,7 +144,6 @@ public class Controller : MonoBehaviour
         {
             if (col.gameObject.GetComponent<Launch>().catchable)
             {
-                numItems += 1;
                 reading = true;
                 currentNote = col.gameObject.GetComponent<Launch>().notename;
                 Destroy(col.gameObject);

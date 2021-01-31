@@ -49,7 +49,9 @@ public class reader : MonoBehaviour
                 cont.reading = false;
                 currentPage.GetComponent<SpriteRenderer>().enabled = false;
                 pageOpen = false;
+                done = false;
                 cont.justFinished = true;
+                cont.numItems += 1;
             }
         }
     }
